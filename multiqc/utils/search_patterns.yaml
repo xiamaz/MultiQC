@@ -262,7 +262,7 @@ dragen/ploidy_estimation_metrics:
 dragen/contig_mean_cov:
   fn_re: '.*\.(wgs|target_bed)_contig_mean_cov_?(tumor|normal)?\.csv'
 dragen/coverage_metrics:
-  fn_re: '.*\.(wgs|target_bed)_coverage_metrics_?(tumor|normal)?\.csv'
+  fn_re: '.*_coverage_metrics.*\.csv'
 dragen/fine_hist:
   fn_re: '.*\.(wgs|target_bed)_fine_hist_?(tumor|normal)?\.csv'
 dragen/fragment_length_hist:
