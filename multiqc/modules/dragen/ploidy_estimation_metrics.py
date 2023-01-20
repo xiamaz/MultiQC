@@ -16,10 +16,12 @@ NAMESPACE = "Ploidy estimation"
 
 class DragenPloidyEstimationMetrics(BaseMultiqcModule):
     def add_ploidy_estimation_metrics(self):
-        data_by_sample = dict()
+        data_by_sample = {}
+        headers = defaultdict(dict)
 
         for f in self.find_log_files("dragen/ploidy_estimation_metrics"):
             s_name, data = parse_ploidy_estimation_metrics_file(f)
+            for d in data: headers[d]['title'] = d
             s_name = self.clean_s_name(s_name, f)
             if s_name in data_by_sample:
                 log.debug(f"Duplicate sample name found! Overwriting: {s_name}")
@@ -34,7 +36,6 @@ class DragenPloidyEstimationMetrics(BaseMultiqcModule):
         # Write data to file
         self.write_data_file(data_by_sample, "dragen_ploidy")
 
-        headers = OrderedDict()
         headers["Ploidy estimation"] = {
             "title": "Sex",
             "description": "Sex chromosome ploidy estimation (XX, XY, X0, 00, etc.)",
@@ -58,7 +59,7 @@ def parse_ploidy_estimation_metrics_file(f):
 
     s_name = re.search(r"(.*)\.ploidy_estimation_metrics.csv", f["fn"]).group(1)
 
-    data = defaultdict(dict)
+    data = {}
 
     for line in f["f"].splitlines():
         _, _, metric, stat = line.split(",")
